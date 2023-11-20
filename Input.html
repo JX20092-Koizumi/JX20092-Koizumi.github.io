@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Design</title>
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous">
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- html2canvasのCDNリンクを追加 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.2.2/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <img id="HeadImg" src="img/Topic1.png">
+        <p id="HeadText">レイアウトするデザインのイメージをそれぞれ 3段階で選択してください。</p>
+    </header>
+
+    <!-- 内容 -->
+    <div id="content">
+        <div class="main">
+             <!-- プレビュー -->
+             <div id="preview" class="preview preview-color">
+                    <!-- レイアウト -->
+                    <textarea id="title" class="textlines titletext2 ColorB" placeholder="タイトル"></textarea>
+                    <textarea id="subtitle" class="textlines subtitletext2 ColorB" placeholder="サブタイトル"></textarea>
+                    <textarea id="context" class="textlines context1c ColorB" placeholder="内容文"></textarea>
+                    <!-- 1つ目のドラッグ＆ドロップ領域 -->
+                    <div id="darea1" class="da droparea3-1" ondrop="dropP1(event)" ondragover="allowDrop(event)">
+                        <label class="imgbase" for="fileInput1">
+                            <!-- 画像を選択するための領域 -->
+                            <div class="fileInputArea">
+                                <input type="file" name="file" id="fileInput1" onchange="previewFile('preimg1', 'image-preview1', 'fileInput1')">
+                                <p>画像を選択</p>
+                            </div>
+                        </label>
+                        <!-- 画像プレビュー領域 -->
+                        <div id="image-preview1" class="image-preview">
+                            <img id="preimg1" class="preimg" src="#" alt="プレビュー画像">
+                        </div>
+                    </div>
+                    
+                    <!-- 2つ目のドラッグ＆ドロップ領域 -->
+                    <div id="darea2" class="da droparea0" ondrop="dropP2(event)" ondragover="allowDrop(event)">
+                        <label class="imgbase" for="fileInput2">
+                            <!-- 画像を選択するための領域 -->
+                            <div class="fileInputArea">
+                                <input type="file" name="file" id="fileInput2" onchange="previewFile('preimg2', 'image-preview2', 'fileInput2')">
+                                <p>画像を選択</p>
+                            </div>
+                        </label>
+                        <!-- 画像プレビュー領域 -->
+                        <div id="image-preview2" class="image-preview">
+                            <img id="preimg2" class="preimg" src="#" alt="プレビュー画像">
+                        </div>
+                    </div>
+
+                    <!-- 3つ目のドラッグ＆ドロップ領域 -->
+                    <div id="darea3" class="da droparea0" ondrop="dropP3(event)" ondragover="allowDrop(event)">
+                        <label class="imgbase" for="fileInput3">
+                            <!-- 画像を選択するための領域 -->
+                            <div class="fileInputArea">
+                                <input type="file" name="file" id="fileInput3" onchange="previewFile('preimg3', 'image-preview3', 'fileInput3')">
+                                <p>画像を選択</p>
+                            </div>
+                        </label>
+                        <!-- 画像プレビュー領域 -->
+                        <div id="image-preview3" class="image-preview">
+                            <img id="preimg3" class="preimg" src="#" alt="プレビュー画像">
+                        </div>
+                    </div>
+            </div>
+
+            <!--画像プレビュー処理-->
+            <script>
+                function previewFile(previewId, previewContainerId, inputFileId) {
+                    const fileInput = document.getElementById(inputFileId);
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = new Image();
+                            img.src = e.target.result;
+                            img.onload = function() {
+                                const preview = document.getElementById(previewId);
+                                const previewContainer = document.getElementById(previewContainerId);
+                                previewContainer.style.display = 'block'; // プレビューを表示
+                                const containerWidth = previewContainer.clientWidth;
+                                const containerHeight = previewContainer.clientHeight;
+                                preview.style.width = '100%';
+                                preview.style.height = '100%';
+                                preview.src = img.src; // 画像を表示する
+                            };
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            </script>                
+            <!--画像ドラッグ＆ドロップ処理-->
+            <script>
+                function allowDrop(event) {
+                    event.preventDefault();
+                }
+
+                function dropP1(event) {
+                    event.preventDefault();
+                    const file = event.dataTransfer.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const preview = document.getElementById('preimg1');
+                            const previewContainer = document.getElementById('image-preview1');
+                            previewContainer.style.display = 'block'; // プレビューを表示
+                            const img = new Image();
+                            img.src = e.target.result;
+                            img.onload = function() {
+                                preview.style.width = '100%';
+                                preview.style.height = '100%';
+                                preview.src = img.src; // 画像を表示する
+                            };
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+
+                function dropP2(event) {
+                    event.preventDefault();
+                    const file = event.dataTransfer.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const preview = document.getElementById('preimg2');
+                            const previewContainer = document.getElementById('image-preview2');
+                            previewContainer.style.display = 'block'; // プレビューを表示
+                            const img = new Image();
+                            img.src = e.target.result;
+                            img.onload = function() {
+                                preview.style.width = '100%';
+                                preview.style.height = '100%';
+                                preview.src = img.src; // 画像を表示する
+                            };
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+
+                function dropP3(event) {
+                    event.preventDefault();
+                    const file = event.dataTransfer.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const preview = document.getElementById('preimg3');
+                            const previewContainer = document.getElementById('image-preview3');
+                            previewContainer.style.display = 'block'; // プレビューを表示
+                            const img = new Image();
+                            img.src = e.target.result;
+                            img.onload = function() {
+                                preview.style.width = '100%';
+                                preview.style.height = '100%';
+                                preview.src = img.src; // 画像を表示する
+                            };
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            </script>
+
+            <!--ベース文字色変更-->
+            <div id="Base" class="BaseColor">
+                <div class="white" onclick="ChangeColor('white')"></div>
+                <div class="black" onclick="ChangeColor('black')"></div>
+            </div>
+
+            <!-- レイアウトラジオボタン -->
+            <div id="LayoutBotton" class="radios layout_radio">
+                <div class="radio-lab">
+                    <p class="radlab"></p>
+                    <div class="radio">
+                        <p>1</p>
+                        <p>2</p>
+                        <p>3</p>
+                    </div>
+                </div> 
+
+                <div class="radio-lab">
+                    <p class="radlab">壮大感</p>
+                    <div class="radio">
+                        <input type="radio" name="InIn1" checked style="accent-color:#4BACC6"; onclick="layout1_1()">
+                        <input type="radio" name="InIn1" style="accent-color:#4BACC6"; onclick="layout1_2()">
+                        <input type="radio" name="InIn1" style="accent-color:#4BACC6"; onclick="layout1_3()">
+                    </div>
+                </div> 
+                <div class="radbar"></div>
+
+                <div class="radio-lab">  
+                    <p class="radlab">文字量</p>
+                    <div class="radio">
+                        <input type="radio" name="InIn2" checked style="accent-color:#4BACC6"; onclick="layout2_1()">
+                        <input type="radio" name="InIn2" style="accent-color:#4BACC6"; onclick="layout2_2()">
+                        <input type="radio" name="InIn2" style="accent-color:#4BACC6"; onclick="layout2_3()">
+                    </div>
+                </div>
+                <div class="radbar"></div>
+
+                <div class="radio-lab">  
+                    <p class="radlab">画像量</p>
+                    <div class="radio">
+                        <input type="radio" name="InIn3" checked style="accent-color:#4BACC6"; onclick="layout3_1()">
+                        <input type="radio" name="InIn3" style="accent-color:#4BACC6"; onclick="layout3_2()">
+                        <input type="radio" name="InIn3" style="accent-color:#4BACC6"; onclick="layout3_3()">
+                    </div>
+                </div>
+                <div class="radbar"></div>
+            </div>
+
+            <!-- レイアウトラジオボタン処理 -->
+            <script>
+                var a = 1; var b = 1; var c = 1;
+                //レイアウトパターン
+                function layout1_1(){
+                    a = 1;
+                    layoutdec(a, b, c);
+                }
+                function layout1_2(){
+                    a = 2;
+                    layoutdec(a, b, c);
+                }
+                function layout1_3(){
+                    a = 3;
+                    layoutdec(a, b, c);
+                }
+                function layout2_1(){
+                    b = 1;
+                    layoutdec(a, b, c);
+                }
+                function layout2_2(){
+                    b = 2;
+                    layoutdec(a, b, c);
+                }
+                function layout2_3(){
+                    b = 3;
+                    layoutdec(a, b, c);
+                }
+                function layout3_1(){
+                    c = 1;
+                    layoutdec(a, b, c);
+                }
+                function layout3_2(){
+                    c = 2;
+                    layoutdec(a, b, c);
+                }
+                function layout3_3(){
+                    c = 3;
+                    layoutdec(a, b, c);
+                }
+
+                function layoutdec(a, b, c){
+                    if(a==3 && b==1 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context1a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==3 && b==1 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context1b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea1-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==3 && b==1 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context1b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea1-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea1-3c");
+                    }
+                    if(a==3 && b==2 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context2a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==3 && b==2 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context2a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea1-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==3 && b==2 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context2a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea1-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea1-3c");
+                    }
+                    if(a==3 && b==3 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context3a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==3 && b==3 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context3a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea1-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==3 && b==3 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context3a");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea1-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea1-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea1-3c");
+                    }
+                    if(a==2 && b==1 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context1b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==2 && b==1 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context1b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea2-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==2 && b==1 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context1b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea2-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea2-3c");
+                    }
+                    if(a==2 && b==2 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context2b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==2 && b==2 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context2b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea2-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==2 && b==2 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context2b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea2-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea2-3c");
+                    }
+                    if(a==2 && b==3 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context3b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==2 && b==3 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context3b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea2-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==2 && b==3 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext1");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext1");
+                        //内容文
+                        ChangeClass("context", "context3b");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea2-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea2-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea2-3c");
+                    }
+                    if(a==1 && b==1 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext2");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext2");
+                        //内容文
+                        ChangeClass("context", "context1c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==1 && b==1 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext2");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext2");
+                        //内容文
+                        ChangeClass("context", "context1c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea3-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==1 && b==1 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext2");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext2");
+                        //内容文
+                        ChangeClass("context", "context1c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea3-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea3-3c");
+                    }
+                    if(a==1 && b==2 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext3");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext3");
+                        //内容文
+                        ChangeClass("context", "context2c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==1 && b==2 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext3");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext3");
+                        //内容文
+                        ChangeClass("context", "context2c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea3-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==1 && b==2 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext3");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext3");
+                        //内容文
+                        ChangeClass("context", "context2c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea3-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea3-3c");
+                    }
+                    if(a==1 && b==3 && c==1){
+                        //タイトル
+                        ChangeClass("title", "titletext3");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext3");
+                        //内容文
+                        ChangeClass("context", "context3c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-1");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea0");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==1 && b==3 && c==2){
+                        //タイトル
+                        ChangeClass("title", "titletext3");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext3");
+                        //内容文
+                        ChangeClass("context", "context3c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-2a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea3-2b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea0");
+                    }
+                    if(a==1 && b==3 && c==3){
+                        //タイトル
+                        ChangeClass("title", "titletext3");
+                        //サブタイトル
+                        ChangeClass("subtitle", "subtitletext3");
+                        //内容文
+                        ChangeClass("context", "context3c");
+                        //ドロップエリア1
+                        ChangeClass("darea1", "droparea3-3a");
+                        //ドロップエリア2
+                        ChangeClass("darea2", "droparea3-3b");
+                        //ドロップエリア3
+                        ChangeClass("darea3", "droparea3-3c");
+                    }
+                }
+            </script>
+
+            <!-- クラス変更処理 -->
+            <script>
+                function ChangeClass(ElID, NeClass){
+                    var ElementType = document.getElementById(ElID);
+                    var classes = ElementType.classList;
+                    if (classes.length > 1) {
+                        // 2番目のクラスを置き換える
+                        classes.remove(classes[1]);
+                        classes.add(NeClass);
+                    }
+                    if(classes.length == 1) {
+                        // 1番目のクラスを置き換える
+                        classes.remove(classes[0]);
+                        classes.add(NeClass);
+                    }
+                }
+            </script>
+
+            <!-- ベース文字色変更処理-->
+            <script>
+                function ChangeColor(color){
+                    // すべてのtextarea要素を取得
+                    var textareas = document.querySelectorAll('textarea');
+                    // すべてのtextarea要素に対して処理
+                    textareas.forEach(function(textarea){
+                        // textareaのクラスリストを取得
+                        var classes = textarea.classList;
+                        // クラスリストが空でない場合、一つ目のクラスを別のクラスに置き換える
+                        if (classes.length > 0) {
+                            // 新しいクラス名
+                            if(color == 'white'){
+                                var newClass = "ColorW";
+                            }
+                            if(color == 'black'){
+                                var newClass = "ColorB";
+                            }
+                            // 3つ目のクラスを削除
+                            var removedClass = classes[2];
+                            classes.remove(removedClass);
+                            // 新しいクラスを追加
+                            classes.add(newClass);
+                        }
+                    });
+                }
+            </script>
+
+            <!-- カラーラジオボタン -->
+            <div div id="ColorBotton" class="radios Null">
+                <div class="ColorRadio">
+                    <input type="radio" class="CR" name="Color" checked style="accent-color:#4BACC6"; onclick="ColorStyle('Romantic')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Dynamic')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Classic')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Modern')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Formal')">
+                </div>
+                <div class="ColorText">
+                    <p class="CR">ロマンチック</p>
+                    <p class="CR">ダイナミック</p>
+                    <p class="CR">クラシック</p>
+                    <p class="CR">モダン</p>
+                    <p class="CR">フォーマル</p>
+                </div>
+                <div class="ColorRadio">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Clear')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Gorgeous')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Dandy')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Natural')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Pretty')">
+                </div>
+                <div class="ColorText">
+                    <p class="CR">クリア</p>
+                    <p class="CR">ゴージャス</p>
+                    <p class="CR">ダンディ</p>
+                    <p class="CR">ナチュラル</p>
+                    <p class="CR">プリティ</p>
+                </div>
+                <div class="ColorRadio">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Casual')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Wild')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Chic')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Elegant')">
+                    <input type="radio" class="CR" name="Color" style="accent-color:#4BACC6"; onclick="ColorStyle('Cool')">
+                </div>
+                <div class="ColorText">
+                    <p class="CR">カジュアル</p>
+                    <p class="CR">ワイルド</p>
+                    <p class="CR">シック</p>
+                    <p class="CR">エレガント</p>
+                    <p class="CR">クール</p>
+                </div>
+                <div class="ColorSelect">
+                    <div id="C1" class="Color1 Romantic1" onclick="ColorSelect(1)"></div>
+                    <div id="C2" class="Color2 Romantic2" onclick="ColorSelect(2)"></div>
+                    <div id="C3" class="Color3 Romantic3" onclick="ColorSelect(3)"></div>
+                </div>
+            </div>
+
+            <!-- カラー処理 -->
+            <script>
+                var CS = 'Romantic';
+                //ラジオボタンによる
+                function ColorStyle(CS){
+                    switch(CS){
+                        case 'Romantic':
+                            ChangeClass("C1", "Romantic1");
+                            ChangeClass("C2", "Romantic2");
+                            ChangeClass("C3", "Romantic3");
+                            break;
+                        case 'Dynamic':
+                            ChangeClass("C1", "Dynamic1");
+                            ChangeClass("C2", "Dynamic2");
+                            ChangeClass("C3", "Dynamic3");
+                            break;
+                        case 'Classic':
+                            ChangeClass("C1", "Classic1");
+                            ChangeClass("C2", "Classic2");
+                            ChangeClass("C3", "Classic3");
+                            break;
+                        case 'Modern':
+                            ChangeClass("C1", "Modern1");
+                            ChangeClass("C2", "Modern2");
+                            ChangeClass("C3", "Modern3");
+                            break;
+                        case 'Formal':
+                            ChangeClass("C1", "Formal1");
+                            ChangeClass("C2", "Formal2");
+                            ChangeClass("C3", "Formal3");
+                            break;
+                        case 'Clear':
+                            ChangeClass("C1", "Clear1");
+                            ChangeClass("C2", "Clear2");
+                            ChangeClass("C3", "Clear3");
+                            break;
+                        case 'Gorgeous':
+                            ChangeClass("C1", "Gorgeous1");
+                            ChangeClass("C2", "Gorgeous2");
+                            ChangeClass("C3", "Gorgeous3");
+                            break;
+                        case 'Dandy':
+                            ChangeClass("C1", "Dandy1");
+                            ChangeClass("C2", "Dandy2");
+                            ChangeClass("C3", "Dandy3");
+                            break;
+                        case 'Natural':
+                            ChangeClass("C1", "Natural1");
+                            ChangeClass("C2", "Natural2");
+                            ChangeClass("C3", "Natural3");
+                            break;
+                        case 'Pretty':
+                            ChangeClass("C1", "Pretty1");
+                            ChangeClass("C2", "Pretty2");
+                            ChangeClass("C3", "Pretty3");
+                            break;
+                        case 'Casual':
+                            ChangeClass("C1", "Casual1");
+                            ChangeClass("C2", "Casual2");
+                            ChangeClass("C3", "Casual3");
+                            break;
+                        case 'Wild':
+                            ChangeClass("C1", "Wild1");
+                            ChangeClass("C2", "Wild2");
+                            ChangeClass("C3", "Wild3");
+                            break;
+                        case 'Chic':
+                            ChangeClass("C1", "Chic1");
+                            ChangeClass("C2", "Chic2");
+                            ChangeClass("C3", "Chic3");
+                            break;
+                        case 'Elegant':
+                            ChangeClass("C1", "Elegant1");
+                            ChangeClass("C2", "Elegant2");
+                            ChangeClass("C3", "Elegant3");
+                            break;
+                        case 'Cool':
+                            ChangeClass("C1", "Cool1");
+                            ChangeClass("C2", "Cool2");
+                            ChangeClass("C3", "Cool3");
+                            break;
+                    }
+                    this.CS = CS;
+                }
+                //セレクト色クリック処理
+                function ColorSelect(Num){
+                    switch(CS){
+                        case 'Romantic':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Romantic1");
+                                ChangeColor('black');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Romantic2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Romantic3");
+                                ChangeColor('black');
+                                break;
+                            }
+                            break;
+                        case 'Dynamic':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Dynamic1");
+                                ChangeColor('black');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Dynamic2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Dynamic3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Classic':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Classic1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Classic2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Classic3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Modern':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Modern1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Modern2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Modern3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Formal':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Formal1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Formal2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Formal3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Clear':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Clear1");
+                                ChangeColor('black');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Clear2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Clear3");
+                                ChangeColor('black');
+                                break;
+                            }
+                            break;
+                        case 'Gorgeous':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Gorgeous1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Gorgeous2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Gorgeous3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Dandy':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Dandy1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Dandy2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Dandy3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Natural':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Natural1");
+                                ChangeColor('black');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Natural2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Natural3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Pretty':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Pretty1");
+                                ChangeColor('black');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Pretty2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Pretty3");
+                                ChangeColor('black');
+                                break;
+                            }
+                            break;
+                        case 'Casual':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Casual1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Casual2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Casual3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Wild':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Wild1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Wild2");
+                                ChangeColor('white');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Wild3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Chic':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Chic1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Chic2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Chic3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Elegant':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Elegant1");
+                                ChangeColor('white');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Elegant2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Elegant3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                        case 'Cool':
+                            switch(Num){
+                            case 1:
+                                ChangeClass("preview", "Cool1");
+                                ChangeColor('black');
+                                break;
+                            case 2:
+                                ChangeClass("preview", "Cool2");
+                                ChangeColor('black');
+                                break;
+                            case 3:
+                                ChangeClass("preview", "Cool3");
+                                ChangeColor('white');
+                                break;
+                            }
+                            break;
+                    }
+                }
+            </script>
+
+            <!-- ダウンロードボタン -->
+            <div id="DownloadBotton" class="Null">
+                <img class="PB Out_JPEG" src="img/Out_JPEG.png" onclick="OutImg('JPEG')">
+                <img class="PB Out_PNG" src="img/Out_PNG.png" onclick="OutImg('PNG')">
+            </div>
+
+            <!-- 画像出力 -->
+            <script>
+                function OutImg(Format) {
+                    var outputArea = document.querySelector('.preview');
+                    
+                    html2canvas(outputArea, {
+                        scale: 1, // キャプチャ時のスケールを調整
+                        width: outputArea.clientWidth * 1, // キャプチャ時の幅を調整
+                        height: outputArea.clientHeight * 1, // キャプチャ時の高さを調整
+                    }).then(function (canvas) {
+                        var imgData = canvas.toDataURL('image/' + Format);
+                        var link = document.createElement('a');
+                        link.download = 'output_image.' + Format;
+                        link.href = imgData;
+                        link.click();
+                    });
+                }
+            </script>
+        </div>
+
+        <div class="PageBotton">
+            <img id="back" class="PB Null" src="img/back.png" onclick="ChangeState('back')">
+            <img id="next" class="PB next_bt" src="img/next.png" onclick="ChangeState('next')">
+        </div>
+
+        <!-- 状態決定 -->
+        <script>
+            StateNum = 1;
+            //ボタンで状態を決定
+            function ChangeState(BaNe){
+                if(BaNe=='back'){
+                    StateNum--;
+                }
+                if(BaNe=='next'){
+                    StateNum++;
+                }
+                State(StateNum);
+            }
+            //状態
+            function State(StateNum){
+                switch(StateNum){
+                    case 1:
+                        //ヘッダー
+                        ChangeHeadImg("img/Topic1.png");
+                        ChangeHeadText('レイアウトするデザインのイメージをそれぞれ 3段階で選択してください。');
+                        //ボタン
+                        ChangeClass("back", "Null");
+                        ChangeClass("next", "next_bt");
+                        //入力部分
+                        ChangeClass("Base", "BaseColor");
+                        ChangeClass("LayoutBotton", "layout_radio");
+                        ChangeClass("ColorBotton", "Null");
+                        ChangeClass("DownloadBotton", "Null");
+                        break;
+                    case 2:
+                        //ヘッダー
+                        ChangeHeadImg("img/Topic2.png");
+                        ChangeHeadText('文字・背景のカラーイメージを候補の中から選択してください。');
+                        //ボタン
+                        ChangeClass("back", "back_bt");
+                        ChangeClass("next", "next_bt");
+                        //入力部分
+                        ChangeClass("Base", "Null");
+                        ChangeClass("LayoutBotton", "Null");
+                        ChangeClass("ColorBotton", "color_radio");
+                        ChangeClass("DownloadBotton", "Null");
+                        break;
+                    case 3:
+                        //ヘッダー
+                        ChangeHeadImg("img/Topic3.png");
+                        ChangeHeadText('レイアウト・カラーを決定したデザインを確認又は保存できます。');
+                        //ボタン
+                        ChangeClass("back", "back_bt");
+                        ChangeClass("next", "Null");
+                        //入力部分
+                        ChangeClass("Base", "Null");
+                        ChangeClass("LayoutBotton", "Null");
+                        ChangeClass("ColorBotton", "Null");
+                        ChangeClass("DownloadBotton", "download");
+                        break;
+                }
+            }
+            //ヘッダ画像差し替え
+            function ChangeHeadImg(NeImg){
+                var elem = document.getElementById("HeadImg");
+                elem.src = NeImg;
+            }
+            //ヘッダ文字差し替え
+            function ChangeHeadText(NeText){
+                document.querySelector('#HeadText').textContent = NeText;
+            }
+        </script>
+    </div>
+</body>
+</html>
